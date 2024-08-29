@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoVoltaje - Calculadora de Consumo de Energía</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      color: #333;
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator-container {
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      max-width: 600px;
+      margin: 20px auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+      font-weight: bold;
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .input-field {
+      font-weight: bold;
+      background-color: #f0f0f0;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      margin: 5px 0;
+      width: calc(100% - 24px);
+    }
+
+    .two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .calculate-btn, .copy-btn {
+      font-weight: bold;
+      color: #fff;
+      background-color: #0077b6;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .results-section {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #0077b6;
+      border-radius: 5px;
+      color: #fff;
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto 20px;
+      max-width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-container">
+    <img src="URL_DEL_LOGO" alt="EcoVoltaje" class="logo">
+    <h2 class="title">EcoVoltaje - Calculadora de Consumo de Energía</h2>
+    
+    <form id="calculator-form">
+      <div class="two-columns">
+        <input type="number" id="bimestre1" placeholder="Bimestre 1" class="input-field">
+        <input type="number" id="bimestre2" placeholder="Bimestre 2" class="input-field">
+        <input type="number" id="bimestre3" placeholder="Bimestre 3" class="input-field">
+        <input type="number" id="bimestre4" placeholder="Bimestre 4" class="input-field">
+        <input type="number" id="bimestre5" placeholder="Bimestre 5" class="input-field">
+        <input type="number" id="bimestre6" placeholder="Bimestre 6" class="input-field">
+      </div>
+      
+      <label for="opcion">Seleccione la opción para dividir:</label>
+      <select id="opcion" class="input-field">
+        <option value="585">585</option>
+        <option value="605">605</option>
+      </select>
+      
+      <button type="button" class="calculate-btn" onclick="calculateResults()">Calcular</button>
+      <button type="button" class="copy-btn" onclick="copyResults()">Copiar Resultado</button>
+    </form>
+    
+    <div id="results" class="results-section">
+      <h3 class="subtitle">Resultados</h3>
+      <p id="texto-resultado"></p>
+    </div>
+  </div>
+
+  <script>
+    function calculateResults() {
+      const bimestres = [
+        parseFloat(document.getElementById('bimestre1').value),
+        parseFloat(document.getElementById('bimestre2').value),
+        parseFloat(document.getElementById('bimestre3').value),
+        parseFloat(document.getElementById('bimestre4').value),
+        parseFloat(document.getElementById('bimestre5').value),
+        parseFloat(document.getElementById('bimestre6').value)
+      ];
+
+      const opcion = parseFloat(document.getElementById('opcion').value);
+
+      const sumaTotal = bimestres.reduce((acc, val) => acc + val, 0);
+      const promedio = sumaTotal / 12;
+      const resultado = (promedio / 41) * 330 / opcion;
+      
+      const resultadoTexto = `Total de energía consumida en 6 bimestres: ${sumaTotal} kWh
+Promedio bimestral: ${promedio.toFixed(2)} kWh
+Paneles necesarios: ${resultado.toFixed(2)}`;
+
+      const bimestreStats = `Bimestre 1: ${bimestres[0]} kWh
+Bimestre 2: ${bimestres[1]} kWh
+Bimestre 3: ${bimestres[2]} kWh
+Bimestre 4: ${bimestres[3]} kWh
+Bimestre 5: ${bimestres[4]} kWh
+Bimestre 6: ${bimestres[5]} kWh`;
+
+      document.getElementById('texto-resultado').innerText = resultadoTexto + '\n\n' + bimestreStats;
+    }
+
+    function copyResults() {
+      const textoResultado = document.getElementById('texto-resultado').innerText;
+      navigator.clipboard.writeText(textoResultado).then(() => {
+        alert('Resultado copiado al portapapeles');
+      });
+    }
+  </script>
+</body>
+</html>
